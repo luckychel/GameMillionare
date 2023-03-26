@@ -71,12 +71,12 @@ struct QuestionsData {
                  rightAnswer: 4, cash: 1_000_000)
     ]
 
-    func getQuestionCash(questionNumber: Int) -> Int {
-        return questions[questionNumber - 1].cash
+    func getQuestionCash(questionNumber: Int) -> Double {
+        return questions[questionNumber].cash
     }
 
     func getRightAnswerIndex(questionNumber: Int) -> Int {
-        return questions[questionNumber - 1].rightAnswer - 1
+        return questions[questionNumber].rightAnswer - 1
     }
     
    

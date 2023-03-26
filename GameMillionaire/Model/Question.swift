@@ -11,5 +11,5 @@ struct Question {
     let question: String
     var answers: [String]
     let rightAnswer: Int
-    let cash: Int
+    let cash: Double
 }

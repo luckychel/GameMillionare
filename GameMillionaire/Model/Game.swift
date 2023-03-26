@@ -9,25 +9,24 @@ import Foundation
 
 class Game {
     
+    static let shared = Game()
+    
     private let resultsCaretaker = GameCaretaker()
     
-    var session: GameSession?
-    
-    func corAnswerProcent (correctAnswerCount: Int, totalQuestionCount: Int) -> Double {
-        
-        return Double(correctAnswerCount * 100 / totalQuestionCount)
-        
-    }
-    
-   var results : [Result] {
+    private (set) var results : [Result] {
         didSet {
             resultsCaretaker.saveGame(self.results)
         }
     }
     
-    static let shared = Game()
-    
     private init(){
         self.results = self.resultsCaretaker.loadGame()
     }
+    
+    var session: GameSession?
+  
+    func addResult(_ result: Result) {
+        results.append(result)
+    }
+   
 }
