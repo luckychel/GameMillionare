@@ -504,7 +504,7 @@
                                             <constraint firstAttribute="width" constant="91" id="v3x-h3-pNo"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="m3w-Yj-YZ2">
@@ -560,6 +560,9 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="C2R-o8-QES"/>
+                    <connections>
+                        <outlet property="showQuestion" destination="m3w-Yj-YZ2" id="qz6-wX-sY2"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eFZ-w9-HT7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

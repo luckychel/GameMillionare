@@ -9,21 +9,31 @@ import UIKit
 
 class SettingsViewController: UIViewController {
 
+    var gameSingleton = Game.shared
+    
+    @IBOutlet weak var showQuestion: UISegmentedControl!
+    
+    public var selectQuestionShow: QuestionShow {
+        switch showQuestion.selectedSegmentIndex {
+        case 0:
+            return .consistently
+        case 1:
+            return .chaotic
+        default:
+            return .consistently
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        self.showQuestion.selectedSegmentIndex = gameSingleton.questionShow.index ?? 0
+        
+        showQuestion.addTarget(self, action: #selector(SettingsViewController.indexChanged(_:)), for: .valueChanged)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @objc func indexChanged(_ sender: UISegmentedControl) {
+        gameSingleton.questionShow = self.selectQuestionShow
     }
-    */
 
 }

@@ -12,7 +12,7 @@ class GameSession {
     var correctAnswer: Int = 0
     var questionQuantity: Int = 0
     var moneyEarned: Double = 0.0
-    
+   
     init(correctAnswer: Int, questionQuantity: Int, moneyEarned: Double) {
         self.correctAnswer = correctAnswer
         self.questionQuantity = questionQuantity

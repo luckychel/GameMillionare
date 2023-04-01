@@ -13,6 +13,8 @@ class Game {
     
     private let resultsCaretaker = GameCaretaker()
     
+    var questionShow: QuestionShow = .consistently
+    
     private (set) var results : [Result] {
         didSet {
             resultsCaretaker.saveGame(self.results)
