@@ -116,7 +116,7 @@ class GameViewController: UIViewController {
     @IBAction func takeMoneyPressed(_ sender: UIButton) {
        
         guard let session = self.gameSingleton.session else { return }
-        var cash = session.moneyEarned.value - self.questions[self.currentQuestion].cash
+        let cash = session.moneyEarned.value - self.questions[self.currentQuestion].cash
         
         let alertController = UIAlertController(title: title, message: "Уверены, что хотите забрать деньги \(cash)?", preferredStyle: .alert)
        
