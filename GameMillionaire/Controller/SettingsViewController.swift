@@ -33,7 +33,7 @@ class SettingsViewController: UIViewController {
     }
     
     @objc func indexChanged(_ sender: UISegmentedControl) {
-        gameSingleton.questionShow = self.selectQuestionShow
+        gameSingleton.setQuestionShow(self.selectQuestionShow)
     }
 
 }

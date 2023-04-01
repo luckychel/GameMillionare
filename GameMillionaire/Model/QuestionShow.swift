@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum QuestionShow: CaseIterable {
+enum QuestionShow: String, CaseIterable {
     case consistently, chaotic
 }
 extension CaseIterable where Self: Equatable {

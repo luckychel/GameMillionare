@@ -13,7 +13,11 @@ class Game {
     
     private let resultsCaretaker = GameCaretaker()
     
-    var questionShow: QuestionShow = .consistently
+    private (set) var questionShow: QuestionShow {
+        didSet {
+            resultsCaretaker.saveQuestionShowStrategy(self.questionShow)
+        }
+    }
     
     private (set) var results : [Result] {
         didSet {
@@ -23,6 +27,7 @@ class Game {
     
     private init(){
         self.results = self.resultsCaretaker.loadGame()
+        self.questionShow = self.resultsCaretaker.loadQuestionShowStrategy()
     }
     
     var session: GameSession?
@@ -31,4 +36,7 @@ class Game {
         results.append(result)
     }
    
+    func setQuestionShow(_ questionShow: QuestionShow) {
+        self.questionShow = questionShow
+    }
 }

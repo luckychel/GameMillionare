@@ -12,15 +12,16 @@ class GameCaretaker {
     
     private let decoder = JSONDecoder()
     private let encoder = JSONEncoder()
-    private let key = "gameRecords"
-
+    private let gameRecordsKey = "gameRecords"
+    private let gameQuestionShowStrategyKey = "gameQuestionShowStrategy"
+    
     var results : [Result]?
 
     func saveGame(_ results: [Result])  {
     
         do {
             let data = try encoder.encode(results)
-            UserDefaults.standard.set(data, forKey: key)
+            UserDefaults.standard.set(data, forKey: gameRecordsKey)
         } catch {
             print(error)
         }
@@ -28,7 +29,7 @@ class GameCaretaker {
 
     func loadGame() -> [Result] {
         
-        guard let data: Data = UserDefaults.standard.data(forKey: key) else {
+        guard let data: Data = UserDefaults.standard.data(forKey: gameRecordsKey) else {
             return []
         }
         do {
@@ -37,5 +38,16 @@ class GameCaretaker {
             print(error)
             return []
         }
+    }
+    
+    func saveQuestionShowStrategy(_ questionShow: QuestionShow) {
+        UserDefaults.standard.set(questionShow.rawValue, forKey: gameQuestionShowStrategyKey)
+    }
+    
+    func loadQuestionShowStrategy() -> QuestionShow {
+        guard let data: String = UserDefaults.standard.string(forKey: gameQuestionShowStrategyKey) else {
+            return .consistently
+        }
+        return QuestionShow(rawValue: data)!
     }
 }
