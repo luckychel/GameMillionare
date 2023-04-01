@@ -126,8 +126,8 @@ class GameViewController: UIViewController {
             let alertController = UIAlertController(title: self.title, message: "Ваш выигрыш: \(session.moneyEarned.value)", preferredStyle: .alert)
             
             let action = UIAlertAction(title: "Ok", style: .default) { action in
-                self.dismiss(animated: true)
                 self.endGame(session.moneyEarned.value)
+                self.dismiss(animated: true)
             }
 
             alertController.addAction(action)
