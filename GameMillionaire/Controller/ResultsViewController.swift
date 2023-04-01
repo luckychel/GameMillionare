@@ -9,13 +9,19 @@ import UIKit
 
 class ResultsViewController: UIViewController {
 
-    var results = Game.shared.results
-
+    //MARK: Private variables
+    var gameSingleton = Game.shared
+    var results: [Result] = []
+    
+    //MARK: IBOutlets
     @IBOutlet var tableView: UITableView!
     
+    //MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
        
+        self.results = gameSingleton.results
+        
         tableView.delegate = self
         tableView.dataSource = self
        
@@ -23,7 +29,6 @@ class ResultsViewController: UIViewController {
 }
 
 extension ResultsViewController: UITableViewDelegate, UITableViewDataSource {
-
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         results.count

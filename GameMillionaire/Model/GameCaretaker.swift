@@ -16,7 +16,8 @@ class GameCaretaker {
     private let gameQuestionShowStrategyKey = "gameQuestionShowStrategy"
     
     var results : [Result]?
-
+    var questions: [Question]?
+    
     func saveGame(_ results: [Result])  {
     
         do {

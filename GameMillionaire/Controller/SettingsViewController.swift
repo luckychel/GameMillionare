@@ -9,10 +9,13 @@ import UIKit
 
 class SettingsViewController: UIViewController {
 
+    //MARK: Private variables
     var gameSingleton = Game.shared
     
+    //MARK: IBOutlets
     @IBOutlet weak var questionShowSegmentControl: UISegmentedControl!
     
+    //MARK: Private properties
     public var selectQuestionShow: QuestionShow {
         switch questionShowSegmentControl.selectedSegmentIndex {
         case 0:
@@ -24,6 +27,7 @@ class SettingsViewController: UIViewController {
         }
     }
 
+    //MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
