@@ -23,6 +23,7 @@ class MainViewController: UIViewController {
                 return
             }
             destinationVC.gameDelegate = self
+            //destinationVC.
         default:
             break;
             

@@ -7,6 +7,7 @@
 
 import UIKit
 
+//MARK: Delegate
 protocol GameViewControllerDelegate: AnyObject {
     
     func didEndGame (withResult result: Result)
@@ -24,14 +25,23 @@ class GameViewController: UIViewController {
     }
 
     //MARK: Private variables
-    let questionsStructure = QuestionsData()
     var gameSingleton = Game.shared
     weak var gameDelegate: GameViewControllerDelegate?
-
+    
+    private var questions: [Question] = []
     var currentQuestion = 0
-    var sumAllQuestion = 0
     var isCorrect: Bool?
     var answerTag: Int!
+    
+    //MARK: Private properties
+    private var createquestionShowStrategy: QuestionShowStrategy {
+        switch self.gameSingleton.questionShow {
+            case .consistently:
+                return ConsistentlyQuestionsStrategy()
+            case .chaotic:
+                return ChaoticQuestionsStrategy()
+            }
+    }
 
     //MARK: IBOutlets
     @IBOutlet weak var timerLabel: UILabel!
@@ -58,7 +68,7 @@ class GameViewController: UIViewController {
     @IBOutlet var answersBtn: [UIButton]!
     
     @IBOutlet weak var takeCashLbl: UIButton!
-    
+
     //MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,10 +80,10 @@ class GameViewController: UIViewController {
         callFriendButton.isHidden = true
         timerLabel.isHidden = true
         EllipseImg.isHidden = true
+
+        self.questions = self.createquestionShowStrategy.mixQuestion(self.gameSingleton.questionShow)
         
-        sumAllQuestion = questionsStructure.questions.count
-        
-        self.gameSingleton.session = GameSession(correctAnswer: 0, questionQuantity: sumAllQuestion, moneyEarned: 0)
+        self.gameSingleton.session = GameSession(correctAnswer: 0, questionQuantity: self.questions.count, moneyEarned: 0)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -85,9 +95,9 @@ class GameViewController: UIViewController {
     //MARK: Button press
     @IBAction func answerBtnPressed(_ sender: UIButton) {
         answerTag = sender.tag
-        if answerTag == questionsStructure.questions[currentQuestion].rightAnswer {
+        if answerTag == self.questions[currentQuestion].rightAnswer {
             self.gameSingleton.session?.correctAnswer += 1
-            self.gameSingleton.session?.moneyEarned = questionsStructure.questions[currentQuestion].cash
+            self.gameSingleton.session?.moneyEarned = self.questions[currentQuestion].cash
             isCorrect = true
         } else {
             isCorrect = false
@@ -99,28 +109,28 @@ class GameViewController: UIViewController {
     //MARK: Methods
     private func addQuestion(_ index: Int) {
         
-        guard sumAllQuestion > index else {
+        guard self.questions.count > index else {
             return
         }
         
         getQuestion(index)
         setButtonsBackToDefault()
         numbOfQuestion.text = ("Вопрос ") + String(index + 1)
-        cash.text = ("Сумма  ") + String(questionsStructure.questions[index].cash)
+        cash.text = ("Сумма  ") + String(self.questions[index].cash)
     }
     
     private func getQuestion(_ index: Int) {
 
-        questionLbl.text = questionsStructure.questions[index].question
+        questionLbl.text = self.questions[index].question
         questionLbl.numberOfLines = 0
         
         //takeCashLbl.setTitle("Забрать деньги", for: .normal)
         //takeCashLbl.layer.cornerRadius = 20
         
-        answersLbl[0].text = questionsStructure.questions[index].answers[0]
-        answersLbl[1].text = questionsStructure.questions[index].answers[1]
-        answersLbl[2].text = questionsStructure.questions[index].answers[2]
-        answersLbl[3].text = questionsStructure.questions[index].answers[3]
+        answersLbl[0].text = self.questions[index].answers[0]
+        answersLbl[1].text = self.questions[index].answers[1]
+        answersLbl[2].text = self.questions[index].answers[2]
+        answersLbl[3].text = self.questions[index].answers[3]
     }
 
     private func setButtonsBackToDefault() {
@@ -138,7 +148,7 @@ class GameViewController: UIViewController {
             
             currentQuestion += 1
             
-            guard sumAllQuestion > currentQuestion else {
+            guard self.questions.count > currentQuestion else {
                 gameDelegate?.didEndGame(withResult: Result(procent: self.gameSingleton.session?.correctAnswerProcent() ?? 0,
                                                             correctAnswerCount: self.gameSingleton.session?.correctAnswer ?? 0,
                                                             moneyEarned: self.gameSingleton.session?.moneyEarned ?? 0, allAnswerCount: self.gameSingleton.session?.questionQuantity ?? 0))
@@ -152,7 +162,7 @@ class GameViewController: UIViewController {
         }
         else {
             answersBtn[answerTag - 1].setBackgroundImage(UIImage(named: RectangleImages.red.rawValue), for: .normal)
-            answersBtn[questionsStructure.getRightAnswerIndex(questionNumber: currentQuestion)].setBackgroundImage(UIImage(named: RectangleImages.green.rawValue), for: .normal)
+            answersBtn[QuestionsData().getRightAnswerIndex(questionNumber: currentQuestion)].setBackgroundImage(UIImage(named: RectangleImages.green.rawValue), for: .normal)
             
             _ = Timer.scheduledTimer(withTimeInterval: 2, repeats: false) {[weak self] timer in
                 guard let self = self else { return }

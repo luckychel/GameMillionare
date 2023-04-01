@@ -11,10 +11,10 @@ class SettingsViewController: UIViewController {
 
     var gameSingleton = Game.shared
     
-    @IBOutlet weak var showQuestion: UISegmentedControl!
+    @IBOutlet weak var questionShowSegmentControl: UISegmentedControl!
     
     public var selectQuestionShow: QuestionShow {
-        switch showQuestion.selectedSegmentIndex {
+        switch questionShowSegmentControl.selectedSegmentIndex {
         case 0:
             return .consistently
         case 1:
@@ -27,9 +27,9 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.showQuestion.selectedSegmentIndex = gameSingleton.questionShow.index ?? 0
+        self.questionShowSegmentControl.selectedSegmentIndex = gameSingleton.questionShow.index ?? 0
         
-        showQuestion.addTarget(self, action: #selector(SettingsViewController.indexChanged(_:)), for: .valueChanged)
+        questionShowSegmentControl.addTarget(self, action: #selector(SettingsViewController.indexChanged(_:)), for: .valueChanged)
     }
     
     @objc func indexChanged(_ sender: UISegmentedControl) {

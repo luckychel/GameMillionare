@@ -478,6 +478,7 @@
         <!--Settings View Controller-->
         <scene sceneID="2zy-7g-aRi">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eFZ-w9-HT7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <viewController id="2MT-1H-FwU" customClass="SettingsViewController" customModule="GameMillionaire" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="f0N-U7-H4M">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
@@ -487,7 +488,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="860"/>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" highlightedImage="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="9a1-Pe-RTB">
-                                <rect key="frame" x="20" y="126" width="87" height="87"/>
+                                <rect key="frame" x="20" y="123" width="87" height="87"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="9a1-Pe-RTB" secondAttribute="height" multiplier="1:1" id="oyn-ma-0s9"/>
                                     <constraint firstAttribute="width" constant="87" id="tRA-Vi-447"/>
@@ -530,7 +531,7 @@
                                 </constraints>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Настройки" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CUV-Gm-Tq7">
-                                <rect key="frame" x="146" y="152" width="187" height="34.666666666666657"/>
+                                <rect key="frame" x="145" y="149" width="187" height="34.666666666666657"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="34.666666666666657" id="tVJ-Oq-TQT"/>
                                     <constraint firstAttribute="width" constant="187" id="tlT-6g-2pz"/>
@@ -546,25 +547,24 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="TfF-DW-eJX" secondAttribute="trailing" id="19S-hF-GeW"/>
                             <constraint firstItem="D2s-D7-vfb" firstAttribute="leading" secondItem="dJb-wf-iGX" secondAttribute="leading" constant="20" id="D3q-sw-xih"/>
-                            <constraint firstItem="9a1-Pe-RTB" firstAttribute="top" secondItem="dJb-wf-iGX" secondAttribute="top" constant="23" id="D87-sw-xuw"/>
+                            <constraint firstItem="9a1-Pe-RTB" firstAttribute="top" secondItem="dJb-wf-iGX" secondAttribute="top" constant="20" id="D87-sw-xuw"/>
                             <constraint firstItem="9a1-Pe-RTB" firstAttribute="leading" secondItem="dJb-wf-iGX" secondAttribute="leading" constant="20" id="El0-Ka-GfU"/>
                             <constraint firstItem="dJb-wf-iGX" firstAttribute="trailing" secondItem="D2s-D7-vfb" secondAttribute="trailing" constant="13" id="HLL-OS-iaT"/>
-                            <constraint firstItem="CUV-Gm-Tq7" firstAttribute="leading" secondItem="9a1-Pe-RTB" secondAttribute="trailing" constant="39" id="KZS-7P-MzH"/>
+                            <constraint firstItem="CUV-Gm-Tq7" firstAttribute="leading" secondItem="9a1-Pe-RTB" secondAttribute="trailing" constant="38" id="KZS-7P-MzH"/>
                             <constraint firstItem="dJb-wf-iGX" firstAttribute="bottom" secondItem="D2s-D7-vfb" secondAttribute="bottom" constant="537" id="MoC-hF-P2O"/>
-                            <constraint firstItem="CUV-Gm-Tq7" firstAttribute="leading" secondItem="TfF-DW-eJX" secondAttribute="trailing" constant="-247" id="POx-Aa-Fxi"/>
+                            <constraint firstItem="CUV-Gm-Tq7" firstAttribute="leading" secondItem="TfF-DW-eJX" secondAttribute="trailing" constant="-248" id="POx-Aa-Fxi"/>
                             <constraint firstItem="TfF-DW-eJX" firstAttribute="leading" secondItem="f0N-U7-H4M" secondAttribute="leading" id="aFH-Ya-hlI"/>
                             <constraint firstAttribute="bottom" secondItem="TfF-DW-eJX" secondAttribute="bottom" id="cjf-yG-BuS"/>
                             <constraint firstItem="TfF-DW-eJX" firstAttribute="top" secondItem="f0N-U7-H4M" secondAttribute="top" id="siy-ef-6Fk"/>
-                            <constraint firstItem="D2s-D7-vfb" firstAttribute="top" secondItem="CUV-Gm-Tq7" secondAttribute="bottom" constant="72.333333333333343" id="uR3-nr-7uE"/>
-                            <constraint firstItem="CUV-Gm-Tq7" firstAttribute="top" secondItem="dJb-wf-iGX" secondAttribute="top" constant="49" id="vHm-Kf-uKu"/>
+                            <constraint firstItem="D2s-D7-vfb" firstAttribute="top" secondItem="CUV-Gm-Tq7" secondAttribute="bottom" constant="75.333333333333343" id="uR3-nr-7uE"/>
+                            <constraint firstItem="CUV-Gm-Tq7" firstAttribute="top" secondItem="dJb-wf-iGX" secondAttribute="top" constant="46" id="vHm-Kf-uKu"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="C2R-o8-QES"/>
                     <connections>
-                        <outlet property="showQuestion" destination="m3w-Yj-YZ2" id="qz6-wX-sY2"/>
+                        <outlet property="questionShowSegmentControl" destination="m3w-Yj-YZ2" id="2wJ-sP-Prs"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="eFZ-w9-HT7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-156.4885496183206" y="-693.66197183098598"/>
         </scene>
