@@ -16,6 +16,7 @@ class Game {
     private init(){
         self.results = self.resultsCaretaker.loadGame()
         self.questionShow = self.resultsCaretaker.loadQuestionShowStrategy()
+        self.questions = self.resultsCaretaker.loadQuestions()
     }
     
     private (set) var results : [Result] {
@@ -27,6 +28,7 @@ class Game {
     func addResult(_ result: Result) {
         results.append(result)
     }
+    
     func clearResults() -> [Result] {
         results = []
         return self.results
@@ -42,5 +44,13 @@ class Game {
         self.questionShow = questionShow
     }
     
-   
+    private (set) var questions : [Question] {
+        didSet {
+            resultsCaretaker.saveQuestions(self.questions)
+        }
+    }
+    
+    func addQuestion(_ result: Question) {
+        questions.append(result)
+    }
 }

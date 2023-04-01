@@ -153,6 +153,7 @@
                 <outlet property="answer4" destination="SqA-Ch-OGg" id="Aru-cT-8OT"/>
                 <outlet property="answer4Switch" destination="4JT-zy-OWb" id="ocJ-iZ-JrE"/>
                 <outlet property="question" destination="ehp-cw-Yr8" id="tEV-Jf-4Yw"/>
+                <outlet property="questionCost" destination="jM3-u9-jpn" id="Tjj-gC-x0L"/>
                 <outletCollection property="answersSwitch" destination="AhQ-bG-Frm" collectionClass="NSMutableArray" id="i9m-Yg-HhT"/>
                 <outletCollection property="answersSwitch" destination="Pa7-rc-hJJ" collectionClass="NSMutableArray" id="HxO-Lk-OIJ"/>
                 <outletCollection property="answersSwitch" destination="cb8-fI-QvM" collectionClass="NSMutableArray" id="r2k-yE-hqT"/>

@@ -109,19 +109,23 @@ class GameViewController: UIViewController {
             isCorrect = false
         }
         answersBtn.forEach {$0.isEnabled = false}
+        takeCashLbl.isEnabled = false
         answerIsChecking()
     }
     
     @IBAction func takeMoneyPressed(_ sender: UIButton) {
        
-        let alertController = UIAlertController(title: title, message: "Уверены, что хотите забрать деньги?", preferredStyle: .alert)
-
+        guard let session = self.gameSingleton.session else { return }
+        var cash = session.moneyEarned.value - self.questions[self.currentQuestion].cash
+        
+        let alertController = UIAlertController(title: title, message: "Уверены, что хотите забрать деньги \(cash)?", preferredStyle: .alert)
+       
+        takeCashLbl.isEnabled = false
+        
         let action1 = UIAlertAction(title: "Да", style: .default) { action in
             
-            guard let session = self.gameSingleton.session else { return }
-
             session.correctAnswer.value = self.currentQuestion
-            session.moneyEarned.value -= self.questions[self.currentQuestion].cash
+            session.moneyEarned.value = cash
             
             let alertController = UIAlertController(title: self.title, message: "Ваш выигрыш: \(session.moneyEarned.value)", preferredStyle: .alert)
             
@@ -135,6 +139,7 @@ class GameViewController: UIViewController {
         }
         
         let action2 = UIAlertAction(title: "Нет", style: .default) { action in
+            self.takeCashLbl.isEnabled = true
             self.dismiss(animated: true)
         }
         
@@ -166,7 +171,8 @@ class GameViewController: UIViewController {
         
         if let session = self.gameSingleton.session {
             takeCashLbl.setTitle("Забрать деньги \(session.moneyEarned.value)", for: .normal)
-            takeCashLbl.layer.cornerRadius = 20
+            takeCashLbl.setTitleColor(UIColor.white, for: .normal)
+            takeCashLbl.layer.cornerRadius = 5
         }
 
         answersLbl[0].text = self.questions[self.currentQuestion].answers[0]
@@ -181,6 +187,8 @@ class GameViewController: UIViewController {
         answersBtn.forEach {$0.isEnabled = true}
         
         answersBtn.forEach {$0.setBackgroundImage(UIImage(named: RectangleImages.blue.rawValue), for: .normal) }
+        
+        self.takeCashLbl.isEnabled = true
     }
     
     private func answerIsChecking() {

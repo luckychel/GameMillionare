@@ -13,12 +13,12 @@ protocol QuestionShowStrategy {
 
 class ConsistentlyQuestionsStrategy: QuestionShowStrategy {
     func mixQuestion(_ questionShow: QuestionShow) -> [Question] {
-        return QuestionsData().questions
+        return Game.shared.questions
     }
 }
 
 class ChaoticQuestionsStrategy: QuestionShowStrategy {
     func mixQuestion(_ questionShow: QuestionShow) -> [Question] {
-        return QuestionsData().questions.shuffled()
+        return Game.shared.questions.shuffled()
     }
 }

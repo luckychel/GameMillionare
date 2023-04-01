@@ -23,25 +23,88 @@ class SettingsViewController: UIViewController {
     }
 
     @IBAction func AddQuestion(_ sender: UIButton) {
-        self.questions.append(Question(question: "", answers: [], rightAnswer: 0, cash: 0))
+        var tempQuestions: [Question] = []
+        if self.questions.count > 0 {
+            tempQuestions = getQuestionsFromTable()
+        }
+        tempQuestions.append(Question(question: "", answers: [], rightAnswer: 0, cash: 0.0))
+        self.questions = tempQuestions
         self.tableView.reloadData()
     }
 
     @IBAction func SaveQuestions(_ sender: UIButton) {
-        var cells = [QuestionAddTableViewCell]()
-        for i in 0...tableView.numberOfSections-1
-        {
-           for j in 0...tableView.numberOfRows(inSection: i)-1
-           {
-               if let cell = tableView.cellForRow(at: NSIndexPath(row: j, section: i) as IndexPath) as? QuestionAddTableViewCell {
-                  cells.append(cell)
-               }
-           }
-        }
-        cells.forEach{ cell in
-            print(cell.question.text as Any)
+        var questions = getQuestionsFromTable()
+        if (!questions.isEmpty && checkQuestionAddArrays(questions)) {
+            questions.forEach{res in
+                gameSingleton.addQuestion(res)
+            }
+            self.questions = []
+            self.tableView.reloadData()
         }
     }
+    
+    func checkQuestionAddArrays(_ questions: [Question]) -> Bool {
+        var res: Bool = true
+        questions.forEach { quest in
+            if quest.question.isEmpty {
+                res = false
+                return
+            }
+            if quest.answers.filter({$0 == ""}).count > 0 {
+                res = false
+                return
+            }
+            if quest.rightAnswer == 0 {
+                res = false
+                return
+            }
+            if quest.cash == 0.0 {
+                res = false
+                return
+            }
+        }
+        var message = ""
+        if (!res) {
+           message = "В форме добавления вопроса присутствуют ошибки, не заполнены обязательные поля!"
+        }
+        else {
+            message = "Вопросы сохранены!"
+        }
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action1 = UIAlertAction(title: "ОК", style: .default) { action in
+            self.dismiss(animated: true)
+        }
+        alertController.addAction(action1)
+        present(alertController, animated: true)
+        return res
+    }
+    
+    func getQuestionsFromTable() -> [Question] {
+        
+        var tempQuestions: [Question] = []
+        guard let cells = tableView.cells as? [QuestionAddTableViewCell] else { return tempQuestions }
+        
+        cells.forEach { cell in
+            var answers: [String] = []
+            answers.append(cell.answer1.text ?? "")
+            answers.append(cell.answer2.text ?? "")
+            answers.append(cell.answer3.text ?? "")
+            answers.append(cell.answer4.text ?? "")
+            var rightAnswer = 0
+            cell.answersSwitch.forEach{sw in
+                if sw.isOn {
+                    rightAnswer = sw.tag + 1
+                }
+            }
+            tempQuestions.append(Question(question: cell.question.text ?? "",
+                                          answers: answers,
+                                          rightAnswer: rightAnswer,
+                                          cash: cell.questionCost.text?.toDouble ?? 0.0))
+        }
+        return tempQuestions
+    }
+    
+   
     
     //MARK: Private properties
     public var selectQuestionShow: QuestionShow {
@@ -96,4 +159,25 @@ extension SettingsViewController: UITableViewDataSource, UITableViewDelegate {
           return cell
     }
 
+}
+
+extension String {
+    var toDouble: Double {
+        return Double(self) ?? 0.0
+    }
+}
+
+extension UITableView {
+    /**
+     * Returns all cells in a table
+     * ## Examples:
+     * tableView.cells // array of cells in a tableview
+     */
+    public var cells: [UITableViewCell] {
+      (0..<self.numberOfSections).indices.map { (sectionIndex: Int) -> [UITableViewCell] in
+          (0..<self.numberOfRows(inSection: sectionIndex)).indices.compactMap { (rowIndex: Int) -> UITableViewCell? in
+              self.cellForRow(at: IndexPath(row: rowIndex, section: sectionIndex))
+          }
+      }.flatMap { $0 }
+    }
 }

@@ -21,11 +21,12 @@ class QuestionAddTableViewCell: UITableViewCell {
     @IBOutlet var answer3Switch: UISwitch!
     @IBOutlet var answer4Switch: UISwitch!
     
+    @IBOutlet weak var questionCost: UITextField!
+    
     @IBOutlet var answersSwitch: [UISwitch]!
     
     //MARK: Button press
     @IBAction func answersSwitchPressed(_ sender: UISwitch) {
-        print(sender.tag)
         answersSwitch.forEach{ sw in
             if sw.tag != sender.tag {
                 sw.isOn = false
@@ -35,13 +36,9 @@ class QuestionAddTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
-    
 }
