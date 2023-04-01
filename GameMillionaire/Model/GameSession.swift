@@ -9,15 +9,17 @@ import Foundation
 
 class GameSession {
     
-    var allQuestionQuantity: Int = 0
-    var correctAnswer: Observable<Int> = Observable<Int>(0)
-    var moneyEarned: Observable<Double> = Observable<Double>(0.0)
+    var correctAnswer: Int = 0
+    var questionQuantity: Int = 0
+    var moneyEarned: Double = 0.0
     
-    init(allQuestionQuantity: Int) {
-        self.allQuestionQuantity = allQuestionQuantity
+    init(correctAnswer: Int, questionQuantity: Int, moneyEarned: Double) {
+        self.correctAnswer = correctAnswer
+        self.questionQuantity = questionQuantity
+        self.moneyEarned = moneyEarned
     }
     
     func correctAnswerProcent() -> Double {
-        return Double(correctAnswer.value * 100 / allQuestionQuantity)
+        return Double(correctAnswer * 100 / questionQuantity)
     }
 }
