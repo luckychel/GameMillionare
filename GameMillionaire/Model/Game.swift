@@ -27,6 +27,10 @@ class Game {
     func addResult(_ result: Result) {
         results.append(result)
     }
+    func clearResults() -> [Result] {
+        results = []
+        return self.results
+    }
     
     private (set) var questionShow: QuestionShow {
         didSet {

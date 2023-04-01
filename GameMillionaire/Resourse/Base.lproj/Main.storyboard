@@ -169,6 +169,9 @@
                                         <color key="tintColor" red="0.14556765560000001" green="0.26400780680000002" blue="0.41163498160000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="filled"/>
+                                        <connections>
+                                            <action selector="takeMoneyPressed:" destination="9PQ-3N-KFf" eventType="touchUpInside" id="ewx-AE-oTS"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1kF-n6-v37">
                                         <rect key="frame" x="292" y="334.99999999999994" width="50" height="50"/>
@@ -466,7 +469,19 @@
                             <constraint firstItem="ELS-I4-kwM" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="pxa-oV-j2M" secondAttribute="trailing" constant="8" symbolic="YES" id="v6t-p6-4Kp"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="K8f-kT-kJd"/>
+                    <navigationItem key="navigationItem" id="K8f-kT-kJd">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="fZN-qm-wi2">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="SOh-1q-S6O">
+                                <rect key="frame" x="277.66666666666669" y="5" width="99.333333333333314" height="34.333333333333336"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Очистить"/>
+                                <connections>
+                                    <action selector="clearBtnClick:" destination="jto-Yx-UIy" eventType="touchUpInside" id="HmS-nN-uIg"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="fcs-hp-aUI" id="1au-aO-CwA"/>
                     </connections>

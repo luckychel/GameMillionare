@@ -74,7 +74,6 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
         
         //navigationItem.hidesBackButton = true
-        takeCashLbl.isHidden = true
         fiftyFiftyButton.isHidden = true
         hallHelpButton.isHidden = true
         callFriendButton.isHidden = true
@@ -82,22 +81,29 @@ class GameViewController: UIViewController {
         EllipseImg.isHidden = true
 
         self.questions = self.createquestionShowStrategy.mixQuestion(self.gameSingleton.questionShow)
+        self.gameSingleton.session = GameSession(allQuestionQuantity: self.questions.count)
         
-        self.gameSingleton.session = GameSession(correctAnswer: 0, questionQuantity: self.questions.count, moneyEarned: 0)
+        gameSingleton.session?.correctAnswer.addObserver(self, options: [.new, .initial]) {[weak self] (correctAnswer, _) in
+            guard let self = self, let session = self.gameSingleton.session else { return }
+            self.numbOfQuestion.text = "Вопрос \(correctAnswer) из \(session.allQuestionQuantity)"
+        }
+        gameSingleton.session?.moneyEarned.addObserver(self, options: [.new, .initial]) {[weak self] (moneyEarned, _) in
+            guard let self = self else { return }
+            self.cash.text = "Сумма  \(moneyEarned)"
+        }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.addQuestion(currentQuestion);
+        self.addQuestion();
     }
     
     //MARK: Button press
     @IBAction func answerBtnPressed(_ sender: UIButton) {
         answerTag = sender.tag
         if answerTag == self.questions[currentQuestion].rightAnswer {
-            self.gameSingleton.session?.correctAnswer += 1
-            self.gameSingleton.session?.moneyEarned = self.questions[currentQuestion].cash
             isCorrect = true
         } else {
             isCorrect = false
@@ -106,31 +112,67 @@ class GameViewController: UIViewController {
         answerIsChecking()
     }
     
-    //MARK: Methods
-    private func addQuestion(_ index: Int) {
+    @IBAction func takeMoneyPressed(_ sender: UIButton) {
+       
+        let alertController = UIAlertController(title: title, message: "Уверены, что хотите забрать деньги?", preferredStyle: .alert)
+
+        let action1 = UIAlertAction(title: "Да", style: .default) { action in
+            
+            guard let session = self.gameSingleton.session else { return }
+
+            session.correctAnswer.value = self.currentQuestion
+            session.moneyEarned.value -= self.questions[self.currentQuestion].cash
+            
+            let alertController = UIAlertController(title: self.title, message: "Ваш выигрыш: \(session.moneyEarned.value)", preferredStyle: .alert)
+            
+            let action = UIAlertAction(title: "Ok", style: .default) { action in
+                self.dismiss(animated: true)
+                self.endGame(session.moneyEarned.value)
+            }
+
+            alertController.addAction(action)
+            self.present(alertController, animated: true)
+        }
         
-        guard self.questions.count > index else {
+        let action2 = UIAlertAction(title: "Нет", style: .default) { action in
+            self.dismiss(animated: true)
+        }
+        
+        alertController.addAction(action1)
+        alertController.addAction(action2)
+
+        present(alertController, animated: true)
+    }
+    
+    //MARK: Methods
+    private func addQuestion() {
+        
+        guard let session = self.gameSingleton.session, session.allQuestionQuantity > self.currentQuestion else {
             return
         }
         
-        getQuestion(index)
+        getQuestion()
         setButtonsBackToDefault()
-        numbOfQuestion.text = ("Вопрос ") + String(index + 1)
-        cash.text = ("Сумма  ") + String(self.questions[index].cash)
+        
+        session.correctAnswer.value = self.currentQuestion + 1
+        session.moneyEarned.value += self.questions[self.currentQuestion].cash
+
     }
     
-    private func getQuestion(_ index: Int) {
+    private func getQuestion() {
 
-        questionLbl.text = self.questions[index].question
+        questionLbl.text = self.questions[self.currentQuestion].question
         questionLbl.numberOfLines = 0
         
-        //takeCashLbl.setTitle("Забрать деньги", for: .normal)
-        //takeCashLbl.layer.cornerRadius = 20
-        
-        answersLbl[0].text = self.questions[index].answers[0]
-        answersLbl[1].text = self.questions[index].answers[1]
-        answersLbl[2].text = self.questions[index].answers[2]
-        answersLbl[3].text = self.questions[index].answers[3]
+        if let session = self.gameSingleton.session {
+            takeCashLbl.setTitle("Забрать деньги \(session.moneyEarned.value)", for: .normal)
+            takeCashLbl.layer.cornerRadius = 20
+        }
+
+        answersLbl[0].text = self.questions[self.currentQuestion].answers[0]
+        answersLbl[1].text = self.questions[self.currentQuestion].answers[1]
+        answersLbl[2].text = self.questions[self.currentQuestion].answers[2]
+        answersLbl[3].text = self.questions[self.currentQuestion].answers[3]
     }
 
     private func setButtonsBackToDefault() {
@@ -146,39 +188,43 @@ class GameViewController: UIViewController {
         if isCorrect == true {
             answersBtn[answerTag - 1].setBackgroundImage(UIImage(named: RectangleImages.green.rawValue), for: .normal)
             
-            currentQuestion += 1
+            self.currentQuestion += 1
             
-            guard self.questions.count > currentQuestion else {
-                gameDelegate?.didEndGame(withResult: Result(procent: self.gameSingleton.session?.correctAnswerProcent() ?? 0,
-                                                            correctAnswerCount: self.gameSingleton.session?.correctAnswer ?? 0,
-                                                            moneyEarned: self.gameSingleton.session?.moneyEarned ?? 0, allAnswerCount: self.gameSingleton.session?.questionQuantity ?? 0))
-                self.gameSingleton.session = nil
+            guard let session = self.gameSingleton.session else { return }
+            guard session.allQuestionQuantity > self.currentQuestion else {
+                self.endGame(session.moneyEarned.value)
                 return
             }
+
             _ = Timer.scheduledTimer(withTimeInterval: 2, repeats: false) {[weak self] timer in
                 guard let self = self else { return }
-                self.addQuestion(self.currentQuestion);
+                self.addQuestion();
             }
         }
         else {
             answersBtn[answerTag - 1].setBackgroundImage(UIImage(named: RectangleImages.red.rawValue), for: .normal)
             answersBtn[QuestionsData().getRightAnswerIndex(questionNumber: currentQuestion)].setBackgroundImage(UIImage(named: RectangleImages.green.rawValue), for: .normal)
-            
+
             _ = Timer.scheduledTimer(withTimeInterval: 2, repeats: false) {[weak self] timer in
+                
                 guard let self = self else { return }
-                self.gameDelegate?.didEndGame(withResult: Result(procent: self.gameSingleton.session?.correctAnswerProcent() ?? 0,
-                                                                 correctAnswerCount: self.gameSingleton.session?.correctAnswer ?? 0,
-                                                                 moneyEarned: self.gameSingleton.session?.moneyEarned ?? 0,
-                                                                 allAnswerCount: self.gameSingleton.session?.questionQuantity ?? 0))
-                self.gameSingleton.session = nil
-                self.navigationController?.popViewController(animated: true)
+                guard let session = self.gameSingleton.session else { return }
+                
+                session.correctAnswer.value = self.currentQuestion
+                session.moneyEarned.value -= self.questions[self.currentQuestion].cash
+                self.endGame(0);
             }
         }
     }
     
-
-    
-   
-    
+    private func endGame(_ moneyEarned: Double) {
+        guard let session = self.gameSingleton.session else { return }
+        self.gameDelegate?.didEndGame(withResult: Result(procent: session.correctAnswerProcent(),
+                                                         correctAnswerCount: session.correctAnswer.value,
+                                                         moneyEarned: moneyEarned,
+                                                         allAnswerCount: session.allQuestionQuantity))
+        self.gameSingleton.session = nil
+        self.navigationController?.popViewController(animated: true)
+    }
 
 }
