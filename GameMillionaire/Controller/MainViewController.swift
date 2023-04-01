@@ -12,6 +12,7 @@ class MainViewController: UIViewController {
     var gameController: GameViewController?
     var resultController: ResultsViewController?
     
+    //MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
     }
